@@ -11,7 +11,7 @@ from scrapy.exporters import CsvItemExporter
 class WriteItemPipeline(object):
 
     def __init__(self):
-        self.filename = 'nasa2016.csv'
+        self.filename = 'nasa2008_13_2.csv'
 
     def open_spider(self, spider):
         self.csvfile = open(self.filename, 'wb')
