@@ -179,8 +179,76 @@ ggplot(data = org_filtered) +
        x = '',
        y = 'Total Number of Projects') +
   coord_flip() + 
-  theme_classic()
+  theme_classic() 
 
+
+# look at 3 most expensive projects per year for study concept and draw table
+most_exp <- nasa_df %>% 
+  select(
+    fy, fy_tot_cost, abstract, organization, proj_lead, city, state
+  ) %>% 
+  group_by( fy ) %>% 
+  arrange(desc(fy_tot_cost)) %>% 
+  top_n(3, fy_tot_cost) %>% 
+  arrange(fy)
+view(most_exp)
+
+
+most_exp %>% 
+  gt() %>% 
+  tab_header(
+    title = "Specific Projects",
+    subtitle = "Top 3 per Fiscal Year"
+  ) %>% 
+  fmt_date(
+    columns=vars(fy), date_style = 10
+  ) %>% 
+  fmt_currency(
+    columns = vars(fy_tot_cost),
+    currency = 'USD'
+  ) %>% 
+  cols_label(
+    fy = 'Fiscal Year',
+    fy_tot_cost = 'Award Total',
+    abstract = 'Abstract',
+    organization = 'Organization',
+    proj_lead = 'Principal Researcher',
+    city = 'City',
+    state = 'State'
+  )
+  
+
+# random sample of 10 projects
+rand <- nasa_df %>% 
+  select(
+    fy, fy_tot_cost, abstract, organization, proj_lead, city, state
+  ) %>% 
+  sample_n(size = 10, replace = T) %>% 
+  arrange(fy)
+view(rand)
+
+rand %>% 
+  gt() %>% 
+  tab_header(
+    title = "Specific Projects",
+    subtitle = "10 Chosen by random selection"
+  ) %>% 
+  fmt_date(
+    columns=vars(fy), date_style = 10
+  ) %>% 
+  fmt_currency(
+    columns = vars(fy_tot_cost),
+    currency = 'USD'
+  ) %>% 
+  cols_label(
+    fy = 'Fiscal Year',
+    fy_tot_cost = 'Award Total',
+    abstract = 'Abstract',
+    organization = 'Organization',
+    proj_lead = 'Principal Researcher',
+    city = 'City',
+    state = 'State'
+  )
 
 
 # filter by state for mapping
